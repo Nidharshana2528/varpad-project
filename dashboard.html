@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VARPAD | Dashboard</title>
+
+    <!-- Leaflet Map -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="logo-icon">
+                V
+            </div>
+
+            <div>
+                <h2>VARPAD</h2>
+                <small>Smart Route Planner</small>
+            </div>
+
+        </div>
+
+        <nav>
+
+            <button class="nav-item active">
+                🏠
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item" onclick="scrollToPlanner()">
+                🗺️
+                <span>Plan Trip</span>
+            </button>
+
+            <button class="nav-item">
+                📅
+                <span>Upcoming</span>
+            </button>
+
+            <button class="nav-item">
+                🚗
+                <span>Vehicles</span>
+            </button>
+
+            <button class="nav-item">
+                📜
+                <span>Trip History</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="profile-mini">
+
+                <div class="avatar">
+                    N
+                </div>
+
+                <div>
+                    <strong>VARPAD User</strong>
+                    <small>Traveller</small>
+                </div>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="welcome-small">
+                    SMART TRAVEL PLANNING
+                </p>
+
+                <h1>
+                    Plan your journey smarter.
+                </h1>
+
+                <p class="sub-text">
+                    Route optimization, vehicle recommendation
+                    and intelligent trip cost estimation.
+                </p>
+
+            </div>
+
+            <button
+                class="create-btn"
+                onclick="scrollToPlanner()"
+            >
+                + Create New Trip
+            </button>
+
+        </header>
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🗺️
+                </div>
+
+                <div>
+                    <span>Total Trips</span>
+                    <strong id="totalTrips">0</strong>
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📅
+                </div>
+
+                <div>
+                    <span>Upcoming</span>
+                    <strong id="upcomingTrips">0</strong>
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🚗
+                </div>
+
+                <div>
+                    <span>Ongoing</span>
+                    <strong id="ongoingTrips">0</strong>
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div>
+                    <span>Estimated Spend</span>
+                    <strong id="totalSpend">₹0</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DESTINATIONS ================= -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-label">
+                        EXPLORE
+                    </p>
+
+                    <h2>
+                        Popular Destinations 🌍
+                    </h2>
+                </div>
+
+                <span>
+                    Discover places
+                </span>
+
+            </div>
+
+
+            <div class="destination-grid">
+
+                <div class="destination-card"
+                     onclick="selectDestination('Bangalore')">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=700&q=80"
+                        alt="Bangalore"
+                    >
+
+                    <div class="destination-overlay">
+
+                        <span>🇮🇳 India</span>
+
+                        <h3>Bangalore</h3>
+
+                        <button>
+                            Explore →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="destination-card"
+                     onclick="selectDestination('Mysuru')">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1600112356915-089abb8fc71a?auto=format&fit=crop&w=700&q=80"
+                        alt="Mysuru"
+                    >
+
+                    <div class="destination-overlay">
+
+                        <span>🇮🇳 India</span>
+
+                        <h3>Mysuru</h3>
+
+                        <button>
+                            Explore →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="destination-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=700&q=80"
+                        alt="Dubai"
+                    >
+
+                    <div class="destination-overlay">
+
+                        <span>🇦🇪 UAE</span>
+
+                        <h3>Dubai</h3>
+
+                        <button>
+                            Explore →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="destination-card">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=700&q=80"
+                        alt="Singapore"
+                    >
+
+                    <div class="destination-overlay">
+
+                        <span>🇸🇬 Singapore</span>
+
+                        <h3>Singapore</h3>
+
+                        <button>
+                            Explore →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRIP PLANNER ================= -->
+
+        <section
+            class="planner-section"
+            id="planner"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        VARPAD ENGINE
+                    </p>
+
+                    <h2>
+                        Smart Trip Planner 🧠
+                    </h2>
+
+                </div>
+
+                <span>
+                    Powered by route optimization
+                </span>
+
+            </div>
+
+
+            <div class="planner-layout">
+
+
+                <!-- LEFT FORM -->
+
+                <div class="planner-form">
+
+                    <div class="form-header">
+
+                        <h3>
+                            Create your trip
+                        </h3>
+
+                        <p>
+                            Enter your travel details.
+                        </p>
+
+                    </div>
+
+
+                    <label>
+                        👥 Number of Members
+                    </label>
+
+                    <input
+                        type="number"
+                        id="members"
+                        value="2"
+                        min="1"
+                    >
+
+
+                    <label>
+                        📍 Starting Location
+                    </label>
+
+                    <input 
+    type="text" 
+    id="startLocation" 
+    class="form-control" 
+    placeholder="Type starting location (e.g. Chennai, Salem)..."
+>
+
+<label> Destinations </label>
+
+<div id="destinationList">
+    <div class="destination-input">
+        <input 
+            type="text" 
+            class="destination-select form-control" 
+            placeholder="Type destination (e.g. Bangalore, Madurai)..."
+        >
+                            <button
+                                onclick="removeDestination(this)"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="add-stop-btn"
+                        onclick="addDestination()"
+                    >
+                        + Add Destination
+                    </button>
+
+
+                    <div class="form-two-column">
+
+                        <div>
+
+                            <label>
+                                📅 Trip Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="tripDate"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label>
+                                ⏱ Duration
+                            </label>
+
+                            <select id="duration">
+
+                                <option>
+                                    1 Day
+                                </option>
+
+                                <option>
+                                    2 Days
+                                </option>
+
+                                <option>
+                                    3 Days
+                                </option>
+
+                                <option>
+                                    4 Days
+                                </option>
+
+                                <option>
+                                    5+ Days
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <label>
+                        🧳 Luggage
+                    </label>
+
+                    <select id="luggage">
+
+                        <option value="low">
+                            Low
+                        </option>
+
+                        <option value="medium">
+                            Medium
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
+                    </select>
+
+
+                    <!-- Find Best Route Button -->
+            <button 
+                id="findRouteBtn" 
+                class="find-route-btn" 
+                onclick="findBestRoute()"
+            >
+                Find Best Route
+            </button>
+        </div>
+
+        <!-- RIGHT MAP -->
+        <div class="map-wrapper">
+            <div id="map"></div>
+        </div>
+
+        </section>
+
+
+        <!-- ================= RESULT ================= -->
+
+        <section
+            class="results-section"
+            id="results"
+            style="display:none;"
+        >
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        ROUTE RESULT
+                    </p>
+
+                    <h2>
+                        Your Smart Route
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-grid">
+
+
+                <!-- BEST ROUTE -->
+
+                <div class="result-card best-route">
+
+                    <div class="result-title">
+
+                        <span class="result-icon">
+                            🏆
+                        </span>
+
+                        <div>
+
+                            <small>
+                                RECOMMENDED
+                            </small>
+
+                            <h3>
+                                Best Route
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="routePath"
+                        class="route-path"
+                    >
+                    </div>
+
+
+                    <div class="route-stats">
+
+                        <div>
+                            <span>Distance</span>
+                            <strong id="distance">
+                                0 km
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Time</span>
+                            <strong id="travelTime">
+                                0 hrs
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="cost-breakdown">
+
+                        <div>
+                            <span>🚗 Vehicle</span>
+                            <strong id="vehicle">
+                                -
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>⛽ Fuel</span>
+                            <strong id="fuel">
+                                0 L
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Fuel Cost</span>
+                            <strong id="fuelCost">
+                                ₹0
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Estimated Total</span>
+                            <strong id="totalCost">
+                                ₹0
+                            </strong>
+                        </div>
+
+                        <div class="per-person">
+
+                            <span>
+                                👥 Cost / Person
+                            </span>
+
+                            <strong id="perPerson">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="save-trip-btn"
+                        onclick="saveTrip()"
+                    >
+                        💾 Save Trip
+                    </button>
+
+                </div>
+
+
+                <!-- FUEL EFFICIENT -->
+
+                <div class="result-card eco-route">
+
+                    <div class="result-title">
+
+                        <span class="result-icon">
+                            🌱
+                        </span>
+
+                        <div>
+
+                            <small>
+                                SMART ALTERNATIVE
+                            </small>
+
+                            <h3>
+                                Fuel Efficient
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="eco-message">
+
+                        <strong>
+                            Save fuel. Save money.
+                        </strong>
+
+                        <p>
+                            This route may be slightly longer
+                            but requires less fuel.
+                        </p>
+
+                    </div>
+
+
+                    <div class="eco-number">
+
+                        <span>
+                            Estimated Saving
+                        </span>
+
+                        <strong id="saving">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="eco-details">
+
+                        <div>
+                            Distance
+                            <strong id="ecoDistance">
+                                -
+                            </strong>
+                        </div>
+
+                        <div>
+                            Fuel
+                            <strong id="ecoFuel">
+                                -
+                            </strong>
+                        </div>
+
+                        <div>
+                            Cost
+                            <strong id="ecoCost">
+                                -
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRIP HISTORY ================= -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        TRIP DESK
+                    </p>
+
+                    <h2>
+                        My Trips
+                    </h2>
+
+                </div>
+
+                <div class="trip-tabs">
+
+                    <button class="active">
+                        Upcoming
+                    </button>
+
+                    <button>
+                        Ongoing
+                    </button>
+
+                    <button>
+                        History
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="tripList"
+                class="trip-list"
+            >
+
+                <div class="empty-trip">
+
+                    <div>
+                        🧳
+                    </div>
+
+                    <h3>
+                        No trips saved yet
+                    </h3>
+
+                    <p>
+                        Create your first smart trip above.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            <p>
+                © 2026 VARPAD · Smart Vehicle & Route Planning
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- Leaflet JS -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
